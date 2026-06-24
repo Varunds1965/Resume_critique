@@ -4,7 +4,7 @@ import io
 import os
 from openai import OpenAI
 from dotenv import load_dotenv
-from langchain_ollama import ChatOllama
+from langchain_groq import ChatGroq
 
 load_dotenv()
 st.set_page_config(page_title = "AI Resume Critiquer", page_icon = "📃", layout = "centered")
@@ -48,10 +48,14 @@ if analyze and uploaded_file:
         {file_content}
         please provide specific suggestions for improvement and highlight any areas that may need more detail or clarification."""
         
-        llm = ChatOllama(model="qwen3:latest", temperature = 0.7)
-        st.write("Sending prompt to ollama...")
+        llm = ChatGroq(
+        model="llama-3.3-70b-versatile",
+        groq_api_key=os.getenv("GROQ_API_KEY"),
+        temperature=0.7
+        )
+        st.write("Sending prompt to Groq...")
         response = llm.invoke(prompt)
-        st.write("Received response from ollama.")
+        st.write("Received response from Grog.")
         st.markdown("### Analysis results")
         st.markdown(response.content)
     except Exception as e:
